@@ -16,6 +16,7 @@ export default function App() {
   const [passwordStatus, setPasswordStatus] = useState("");
   const [bg, setBg] = useState(styles.backGroundLight.backgroundColor);
   const [fc, setFc] = useState(styles.fontLight.color);
+  const [validationMessage, setValidationMessage] = useState("");
   const handlePress = () => {
     setIsMonkey((prevState) => !prevState);
   };
@@ -49,6 +50,18 @@ export default function App() {
       );
     }
   }, [password]);
+
+  const validateInputs = () => {
+    // Basic username validation (e.g., non-empty)
+    const isUsernameValid = username.trim().length > 0;
+    const isPasswordValid = passwordStatus === "Password is valid";
+
+    if (isUsernameValid && isPasswordValid) {
+      setValidationMessage("Success! You are logged in.");
+    } else {
+      setValidationMessage("Failure! Please check your username and password.");
+    }
+  };
   return (
     <View style={[styles.container, { backgroundColor: bg }]}>
       <TouchableOpacity onPress={handlePress}>
@@ -77,13 +90,18 @@ export default function App() {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
       ></TextInput>
-      <Text style={[styles.label, { marginLeft: 70, textAlign: "center" }]}>
+      <Text
+        style={[styles.label, { left: 0, marginRight: 70, marginLeft: 70 }]}
+      >
         {passwordStatus}
       </Text>
 
-      <TouchableOpacity style={styles.btnLogin}>
+      <TouchableOpacity style={styles.btnLogin} onPress={validateInputs}>
         <Text style={[styles.btnText, { color: fc }]}>Login</Text>
       </TouchableOpacity>
+      <Text style={[styles.label, {left: 20, marginRight: 60, marginLeft:20, alignContent: "center", textAlign: "center", }]}>
+        {validationMessage}
+      </Text>
     </View>
   );
 }
